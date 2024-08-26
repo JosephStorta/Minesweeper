@@ -1,23 +1,27 @@
 import pygame
-from pygame import display, event, time
-
-
-SCREEN_SIZE = (640, 480)
+import globals
+from game import Game
 
 pygame.init()
-window = display.set_mode(SCREEN_SIZE)
-clock = time.Clock()
+display = pygame.display.set_mode(globals.SCREEN_SIZE)
+clock = pygame.time.Clock()
+delta = 0
 running = True
+
+game = Game((10, 8), 10)
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
     
-    window.fill("purple")
+    game.update(delta)
+
+    display.fill("black")
+    game.draw(display)
 
     pygame.display.flip()
 
-    clock.tick(60)
+    delta = clock.tick(60)
 
 pygame.quit()
