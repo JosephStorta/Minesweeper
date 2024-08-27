@@ -1,5 +1,5 @@
-from pygame import Surface, font
-import globals
+from pygame import Surface, font, transform
+from globals import SCREEN_SIZE, TILE_SIZE, TILE_SCALE, TILE_SPRITES
 from grid import Grid
 
 class Game:
@@ -23,22 +23,21 @@ class Game:
         self.__drawMines(display)
     
     def __drawBoard(self, display: Surface):
-        board = ""
-        y = 60
+        y = 100
 
         for row in self.__grid.getCells():
+            x = (SCREEN_SIZE[0] - (self.__grid_size[0] * TILE_SIZE[0] * TILE_SCALE)) // 2
             for cell in row:
                 if cell.isRevealed():
-                    board += str(cell.getState()) + " "
+                    sprite = TILE_SPRITES[cell.getState()]
                 else:
-                    board += "# "
+                    sprite = TILE_SPRITES[10]
+                
+                display.blit(transform.scale_by(sprite, TILE_SCALE), (x, y))
 
-            render = self.__font.render(board.rstrip(), False, (255, 255, 255))
-            rect = render.get_rect(centerx = globals.SCREEN_SIZE[0] / 2, y = y)
-            display.blit(render, rect)
+                x += TILE_SIZE[0] * TILE_SCALE
 
-            board = ""
-            y += 50
+            y += TILE_SIZE[1] * TILE_SCALE
     
     def __drawTimer(self, display: Surface):
         minutes = int(self.__timer) // 60
@@ -52,5 +51,5 @@ class Game:
     
     def __drawMines(self, display: Surface):
         mines = self.__font.render(str(self.__mine_number), False, (255, 255, 255))
-        rect = mines.get_rect(centerx = globals.SCREEN_SIZE[0] - 80, y = 10)
+        rect = mines.get_rect(centerx = SCREEN_SIZE[0] - 80, y = 10)
         display.blit(mines, rect)

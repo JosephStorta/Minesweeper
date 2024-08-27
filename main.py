@@ -1,14 +1,16 @@
 import pygame
-import globals
+from globals import SCREEN_SIZE, readTiles
 from game import Game
 
 pygame.init()
-display = pygame.display.set_mode(globals.SCREEN_SIZE)
+display = pygame.display.set_mode(SCREEN_SIZE)
 clock = pygame.time.Clock()
 delta = 0
 running = True
 
-game = Game((10, 8), 10)
+game = Game((16, 10), 12)
+
+readTiles()
 
 while running:
     for event in pygame.event.get():
