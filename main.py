@@ -8,12 +8,14 @@ clock = pygame.time.Clock()
 delta = 0
 running = True
 
-game = Game((16, 10), 12)
+game = Game((16, 10), 20)
 
 readTiles()
 
 while running:
     for event in pygame.event.get():
+        game.handleEvents(event)
+
         if event.type == pygame.QUIT:
             running = False
     

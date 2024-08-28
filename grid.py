@@ -40,7 +40,7 @@ class Grid:
 
         return cell.getState() == 9
     
-    def flagCell(self, cell_x: int, cell_y: int):
+    def flagCell(self, cell_x: int, cell_y: int) -> bool:
         if not self.__isCellValid(cell_x, cell_y):
             return
         
@@ -48,7 +48,8 @@ class Grid:
         if cell.isRevealed():
             return
         
-        cell.setFlagged(True)
+        cell.setFlagged(not cell.isFlagged())
+        return cell.isFlagged()
 
     def __revealNeighbors(self, cell_x: int, cell_y: int):
         self.revealCell(cell_x - 1, cell_y - 1)
