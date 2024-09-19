@@ -1,11 +1,15 @@
-from pygame import image
+from pygame import font, image
 
 SCREEN_SIZE = (640, 480)
+
 TILE_SIZE = (16, 16)
 TILE_SCALE = 2
 TILE_SPRITE = "./sprites/Tiles.png"
 
 TILE_SPRITES = []
+
+font.init()
+FONT = font.Font(None, 64)
 
 def readTiles():
     sheet = image.load(TILE_SPRITE).convert()

@@ -51,6 +51,18 @@ class Grid:
         cell.setFlagged(not cell.isFlagged())
         return cell.isFlagged()
 
+    def checkGrid(self) -> bool:
+        for row in self.__cells:
+            for cell in row:
+                if cell.isRevealed():
+                    if cell.getState() == 9:
+                        return False
+                else:
+                    if cell.getState() < 9:
+                        return False
+        
+        return True
+
     def __revealNeighbors(self, cell_x: int, cell_y: int):
         self.revealCell(cell_x - 1, cell_y - 1)
         self.revealCell(cell_x    , cell_y - 1)

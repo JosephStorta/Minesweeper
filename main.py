@@ -1,6 +1,6 @@
 import pygame
 from globals import SCREEN_SIZE, readTiles
-from game import Game
+from states.main_menu import MainMenu
 
 pygame.init()
 display = pygame.display.set_mode(SCREEN_SIZE)
@@ -8,21 +8,27 @@ clock = pygame.time.Clock()
 delta = 0
 running = True
 
-game = Game((16, 10), 20)
+state = MainMenu()
 
 readTiles()
 
 while running:
     for event in pygame.event.get():
-        game.handleEvents(event)
+        state.handleEvents(event)
 
         if event.type == pygame.QUIT:
             running = False
     
-    game.update(delta)
+    state.update(delta)
+
+    if state.exit:
+        running = False
+    
+    if state.change:
+        state = state.next
 
     display.fill("black")
-    game.draw(display)
+    state.draw(display)
 
     pygame.display.flip()
 
