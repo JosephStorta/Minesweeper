@@ -1,10 +1,13 @@
 import pygame
 from pygame import Surface, transform
 from globals import SCREEN_SIZE, FONT, TILE_SIZE, TILE_SCALE, TILE_SPRITES
-from states.state import State
+import states
 from grid import Grid
+from button import Button
+import states.main_menu
+import states.state
 
-class Game(State):
+class Game(states.state.State):
     def __init__(self, grid_size: tuple, mine_number: int):
         super().__init__()
 
@@ -20,16 +23,26 @@ class Game(State):
 
         self.__timer = 0.0
 
+        self.__menu_button = Button((100, 50), (SCREEN_SIZE[0] / 2, 57), "azure3")
+
         self.__win_message_color = [255, 0, 0]
         self.__color_transition = 0
 
     def update(self, delta: int):
+        self.__menu_button.update(delta)
+
+        if self.__menu_button.getPressed():
+            self.change = True
+            self.next = states.main_menu.MainMenu()
+
         if self.__lose or self.__win:
             return
 
         self.__timer += delta / 1000
     
     def handleEvents(self, event):
+        self.__menu_button.handleEvents(event)
+
         if self.__lose or self.__win:
             return
 
@@ -41,8 +54,16 @@ class Game(State):
                 self.__lose = self.__grid.revealCell(cell_position[0], cell_position[1])
                 self.__win = self.__grid.checkGrid()
             
-            if event.button == 3 and self.__flagged_cells < self.__mine_number:
-                flagged = self.__grid.flagCell(cell_position[0], cell_position[1])
+            if event.button == 3:
+                flagged = None
+
+                if self.__flagged_cells < self.__mine_number:
+                    flagged = self.__grid.flagCell(cell_position[0], cell_position[1])
+                elif self.__flagged_cells == self.__mine_number:
+                    cell = self.__grid.getCell(cell_position[0], cell_position[1])
+
+                    if cell and cell.isFlagged():
+                        flagged = self.__grid.flagCell(cell_position[0], cell_position[1])
 
                 if flagged == None:
                     return
@@ -55,6 +76,7 @@ class Game(State):
     def draw(self, display: Surface):
         self.__drawBoard(display)
         self.__drawTimer(display)
+        self.__drawButtons(display)
         self.__drawMines(display)
 
         if self.__win:
@@ -96,6 +118,9 @@ class Game(State):
         timer = FONT.render(time_display, False, (255, 255, 255))
         rect = timer.get_rect(centerx = 80, y = 32)
         display.blit(timer, rect)
+    
+    def __drawButtons(self, display: Surface):
+        self.__menu_button.draw(display)
     
     def __drawMines(self, display: Surface):
         mines = FONT.render(str(self.__mine_number - self.__flagged_cells), False, (255, 255, 255))
