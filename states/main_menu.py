@@ -10,8 +10,8 @@ class MainMenu(states.state.State):
     def __init__(self):
         super().__init__()
 
-        self.start_button = Button((100, 50), (SCREEN_SIZE[0] / 2, SCREEN_SIZE[1] / 4), "azure3")
-        self.quit_button = Button((100, 50), (SCREEN_SIZE[0] / 2, 2 * SCREEN_SIZE[1] / 4), "azure3")
+        self.start_button = Button((100, 50), (SCREEN_SIZE[0] / 2, SCREEN_SIZE[1] / 4), "./sprites/start_button.png")
+        self.quit_button = Button((100, 50), (SCREEN_SIZE[0] / 2, 2 * SCREEN_SIZE[1] / 4), "./sprites/exit_button.png")
 
     def update(self, delta: int):
         self.start_button.update(delta)
@@ -19,7 +19,7 @@ class MainMenu(states.state.State):
 
         if self.start_button.getPressed():
             self.change = True
-            self.next = states.game.Game((10, 8), 4)
+            self.next = states.game.Game((16, 10), 16)
         
         if self.quit_button.getPressed():
             self.exit = True

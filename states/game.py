@@ -19,11 +19,11 @@ class Game(states.state.State):
         self.__win = False
 
         self.__grid = Grid(grid_size, mine_number)
-        self.__board_position = ((SCREEN_SIZE[0] - (self.__grid_size[0] * TILE_SIZE[0] * TILE_SCALE)) // 2, (SCREEN_SIZE[1] - (self.__grid_size[1] * TILE_SIZE[1] * TILE_SCALE)) // 2)
+        self.__board_position = ((SCREEN_SIZE[0] - (self.__grid_size[0] * TILE_SIZE[0] * TILE_SCALE)) // 2, (SCREEN_SIZE[1] - (self.__grid_size[1] * TILE_SIZE[1] * TILE_SCALE)) // 2 + 32)
 
         self.__timer = 0.0
 
-        self.__menu_button = Button((100, 50), (SCREEN_SIZE[0] / 2, 57), "azure3")
+        self.__menu_button = Button((100, 50), (SCREEN_SIZE[0] / 2, 57), "./sprites/menu_button.png")
 
         self.__win_message_color = [255, 0, 0]
         self.__color_transition = 0
