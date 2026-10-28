@@ -1,13 +1,13 @@
 import pygame
 from pygame import Surface, transform
+
 from globals import SCREEN_SIZE, FONT, TILE_SIZE, TILE_SCALE, TILE_SPRITES
-import states
 from grid import Grid
 from button import Button
-import states.main_menu
-import states.state
+from states.main_menu import MainMenu
+from states.state import State
 
-class Game(states.state.State):
+class Game(State):
     def __init__(self, grid_size: tuple, mine_number: int):
         super().__init__()
 
@@ -25,7 +25,7 @@ class Game(states.state.State):
 
         self.__menu_button = Button((100, 50), (SCREEN_SIZE[0] / 2, 57), "./sprites/menu_button.png")
 
-        self.__win_message_color = [255, 0, 0]
+        self.__win_message_color = [255.0, 0.0, 0.0]
         self.__color_transition = 0
 
     def update(self, delta: int):
@@ -33,7 +33,7 @@ class Game(states.state.State):
 
         if self.__menu_button.getPressed():
             self.change = True
-            self.next = states.main_menu.MainMenu()
+            self.next = MainMenu()
 
         if self.__lose or self.__win:
             return
@@ -80,7 +80,7 @@ class Game(states.state.State):
         self.__drawMines(display)
 
         if self.__win:
-            message = FONT.render("You Win!", False, self.__win_message_color)
+            message = FONT.render("You Win!", False, [int(i) for i in self.__win_message_color])
             rect = message.get_rect(centerx = SCREEN_SIZE[0] / 2, centery = SCREEN_SIZE[1] / 2)
             display.blit(message, rect)
 
@@ -129,9 +129,9 @@ class Game(states.state.State):
     
     def __update_win_color(self):
         if self.__win_message_color[self.__color_transition + 1 if self.__color_transition < 2 else 0] < 255:
-            self.__win_message_color[self.__color_transition + 1 if self.__color_transition < 2 else 0] += 255/20
+            self.__win_message_color[self.__color_transition + 1 if self.__color_transition < 2 else 0] += 255 / 20
         else:
-            self.__win_message_color[self.__color_transition] -= 255/20
+            self.__win_message_color[self.__color_transition] -= 255 / 20
 
         if self.__win_message_color[self.__color_transition] <= 0:
             self.__color_transition = self.__color_transition + 1 if self.__color_transition < 2 else 0

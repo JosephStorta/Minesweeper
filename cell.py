@@ -1,6 +1,6 @@
 class Cell:
     def __init__(self, state: int = 0):
-        self.__state = state
+        self.__state = state # 0-8: Number cell, 9: Mine cell
         self.__revealed = False
         self.__flagged = False
     

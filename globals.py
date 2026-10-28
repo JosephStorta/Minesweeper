@@ -12,9 +12,11 @@ font.init()
 FONT = font.Font(None, 64)
 
 def readTiles():
+    """Convert the cell spritesheet into a global list of tile images."""
     sheet = image.load(TILE_SPRITE).convert()
 
     for y in range(0, sheet.get_height(), TILE_SIZE[1]):
         for x in range(0, sheet.get_width(), TILE_SIZE[0]):
+            # Get the subsprite from the tilesheet
             sprite = sheet.get_rect(x = x, y = y, size = TILE_SIZE)
             TILE_SPRITES.append(sheet.subsurface(sprite))

@@ -1,5 +1,6 @@
-from cell import Cell
 from random import randint
+
+from cell import Cell
 
 class Grid:
     def __init__(self, grid_size: tuple, mine_number: int):
@@ -19,10 +20,19 @@ class Grid:
         return self.__cells
 
     def getCell(self, cell_x: int, cell_y: int) -> Cell:
-        if self.__isCellValid(cell_x, cell_y):
-            return self.__cells[cell_y][cell_x]
+        if not self.__isCellValid(cell_x, cell_y):
+            return Cell() # Returns a blank cell
+        
+        return self.__cells[cell_y][cell_x]
     
     def revealCell(self, cell_x: int, cell_y: int) -> bool:
+        """Reveal a hidden cell.
+        
+        Returns:
+            bool:
+                `True` if the revealed cell is a mine.
+                Returns `False` if otherwise.
+        """
         if not self.__isCellValid(cell_x, cell_y):
             return False
         
@@ -40,18 +50,36 @@ class Grid:
 
         return cell.getState() == 9
     
-    def flagCell(self, cell_x: int, cell_y: int) -> bool:
+    def flagCell(self, cell_x: int, cell_y: int) -> bool | None:
+        """Reverse the flagged state of a given cell.
+
+        Returns:
+            bool:
+                The new flagged state.
+                If the given cell is invalid, returns `None`.
+        """
         if not self.__isCellValid(cell_x, cell_y):
-            return
+            return None
         
         cell = self.getCell(cell_x, cell_y)
         if cell.isRevealed():
-            return
+            return None
         
         cell.setFlagged(not cell.isFlagged())
         return cell.isFlagged()
 
     def checkGrid(self) -> bool:
+        """Check if the game should end.
+        
+        Checks if there is either:
+        - A revealed mine
+        - A hidden non-mine
+
+        Returns:
+            bool:
+                `True` if the game should end.
+                Returns `False` if otherwise.
+        """
         for row in self.__cells:
             for cell in row:
                 if cell.isRevealed():

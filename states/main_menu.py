@@ -1,12 +1,11 @@
-import pygame
-from pygame import Surface, font, mouse
+from pygame import Surface
+
 from globals import SCREEN_SIZE
 from button import Button
-import states
-import states.game
-import states.state
+from states.game import Game
+from states.state import State
 
-class MainMenu(states.state.State):
+class MainMenu(State):
     def __init__(self):
         super().__init__()
 
@@ -19,7 +18,7 @@ class MainMenu(states.state.State):
 
         if self.start_button.getPressed():
             self.change = True
-            self.next = states.game.Game((16, 10), 16)
+            self.next = Game((16, 10), 16)
         
         if self.quit_button.getPressed():
             self.exit = True
