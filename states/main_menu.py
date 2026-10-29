@@ -2,7 +2,7 @@ from pygame import Surface
 
 from globals import SCREEN_SIZE
 from button import Button
-from states.game import Game
+from states import game
 from states.state import State
 
 class MainMenu(State):
@@ -18,7 +18,7 @@ class MainMenu(State):
 
         if self.start_button.getPressed():
             self.change = True
-            self.next = Game((16, 10), 16)
+            self.next = game.Game((16, 10), 16)
         
         if self.quit_button.getPressed():
             self.exit = True

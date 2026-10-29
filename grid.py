@@ -31,7 +31,7 @@ class Grid:
         Returns:
             bool:
                 `True` if the revealed cell is a mine.
-                Returns `False` if otherwise.
+                `False` if otherwise.
         """
         if not self.__isCellValid(cell_x, cell_y):
             return False
